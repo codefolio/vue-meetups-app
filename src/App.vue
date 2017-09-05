@@ -7,7 +7,7 @@
       overflow
     >
       <v-list dense>
-        <v-list-tile v-for="item in items" :key="item.title" :to="item.link">
+        <v-list-tile v-for="item in menuItems" :key="item.title" :to="item.link">
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
@@ -37,13 +37,26 @@
     data () {
       return {
         drawer: false,
-        items: [
-          { title: 'View Meetups', icon: 'supervisor_account', link: '/meetups' },
-          { title: 'Organize Meetup', icon: 'room', link: '/meetup/new' },
-          { title: 'Profile', icon: 'person', link: '/profile' },
+        items: ''
+      }
+    },
+    computed: {
+      menuItems () {
+        let menuItems = [
           { title: 'Sign up', icon: 'face', link: '/signup' },
           { title: 'Sign in', icon: 'lock_open', link: '/signin' }
         ]
+        if (this.userIsAuthenticated) {
+          menuItems = [
+            { title: 'View Meetups', icon: 'supervisor_account', link: '/meetups' },
+            { title: 'Organize Meetup', icon: 'room', link: '/meetup/new' },
+            { title: 'Profile', icon: 'person', link: '/profile' }
+          ]
+        }
+        return menuItems
+      },
+      userIsAuthenticated () {
+        return this.$store.getters.user !== null && this.$store.getters.user !== undefined
       }
     }
   }
